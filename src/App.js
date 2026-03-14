@@ -47,17 +47,14 @@ async function fetchNotionData() {
     const publishedAt = p["Published At"]?.date?.start?.slice(0,10) || "";
     const category    = p["category"]?.select?.name || "General Inquiry";
     const platforms   = (p["PI Platform"]?.multi_select || []).map(x => x.name);
-    const featured    = p["Featured"]?.checkbox || false;
-    if (title) results.push({ id:page.id, title, summary, source, url, publishedAt, category, featured, platforms: platforms.length ? platforms : ["Other"] });
+    if (title) results.push({ id:page.id, title, summary, source, url, publishedAt, category, platforms: platforms.length ? platforms : ["Other"] });
   }
   return results;
 }
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { margin: 0; padding: 0; }
-  button, select, input { font-family: 'Montserrat', sans-serif; }
+  * { box-sizing: border-box; }
   @keyframes pulseRing { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.8)} }
   @keyframes fadeSlide { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
   @keyframes slideOut  { 0%{transform:translateY(0);opacity:1} 100%{transform:translateY(-100%);opacity:0} }
@@ -94,7 +91,7 @@ export default function App() {
 
   useEffect(() => { setDrawerOpen(false); }, [selPI]);
 
-  const HOT = data.filter(d => d.featured).slice(0, 5);
+  const HOT = data.filter(d => ["Issue / Incident","New Inventory","Policy Update"].includes(d.category)).slice(0,3);
 
   useEffect(() => {
     if (HOT.length === 0) return;
@@ -132,7 +129,7 @@ export default function App() {
       <style>{css}</style>
 
       {/* Header */}
-      <div         style={{ background:"linear-gradient(120deg, #1a56f0 0%, "+MOLOCO_BLUE+" 40%, "+MOLOCO_NAVY+" 100%)" }}>
+      <div style={{ background:"linear-gradient(135deg, "+MOLOCO_BLUE+" 0%, "+MOLOCO_NAVY+" 100%)" }}>
         <div style={{ maxWidth:860, margin:"0 auto", padding:"24px 24px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div>
             <div style={{ color:"#fff", fontWeight:900, fontSize:28, letterSpacing:.3 }}>PI Intelligence Hub</div>
@@ -143,9 +140,7 @@ export default function App() {
               <div style={{ width:8, height:8, borderRadius:"50%", background:"#22C55E", position:"absolute" }} />
               <div style={{ width:8, height:8, borderRadius:"50%", background:"#22C55E", position:"absolute", animation:"pulseRing 2s ease infinite" }} />
             </div>
-            <span style={{ color:"rgba(255,255,255,0.5)", fontSize:11 }}>
-              {data.length > 0 ? `Updated: ${data[0].publishedAt}` : "Live Sync"}
-            </span>
+            <span style={{ color:"rgba(255,255,255,0.5)", fontSize:11 }}>Live Sync</span>
           </div>
         </div>
       </div>
@@ -156,7 +151,7 @@ export default function App() {
           <div style={{ maxWidth:860, margin:"0 auto", display:"flex", alignItems:"stretch", height:30 }}>
             <div style={{ display:"flex", alignItems:"center", gap:6, paddingRight:14, borderRight:"1px solid rgba(255,255,255,0.15)", flexShrink:0 }}>
               <div style={{ width:5, height:5, borderRadius:"50%", background:MOLOCO_ORANGE }} />
-              <span style={{ fontSize:10, fontWeight:700, color:MOLOCO_ORANGE, letterSpacing:1.2, textTransform:"uppercase" }}>Featured</span>
+              <span style={{ fontSize:10, fontWeight:700, color:MOLOCO_ORANGE, letterSpacing:1.2, textTransform:"uppercase" }}>Latest</span>
             </div>
             <div style={{ flex:1, overflow:"hidden", paddingLeft:14, position:"relative" }}>
               {(() => {
@@ -270,9 +265,8 @@ export default function App() {
                                   ))}
                                   <span style={{ color:"#D1D9E6", fontSize:9 }}>·</span>
                                   <span style={{ fontSize:9, fontWeight:500, padding:"1px 6px", borderRadius:999, background:cs.bg, color:cs.text, border:"1px solid "+cs.border }}>{item.category}</span>
-                                  {item.featured && <span style={{ fontSize:9, fontWeight:700, padding:"1px 6px", borderRadius:999, background:"#FFF7ED", color:MOLOCO_ORANGE, border:"1px solid #FFD6B8" }}>⭐ Featured</span>}
                                 </div>
-                                <div style={{ fontWeight:700, fontSize:15, color:"#0F1729", lineHeight:1.4, marginTop:2 }}>{item.title}</div>
+                                <div style={{ fontWeight:800, fontSize:16, color:"#0F1729", lineHeight:1.4, marginTop:2 }}>{item.title}</div>
                                 <div style={{ marginTop:7, display:"flex", alignItems:"center", gap:8 }}>
                                   <span style={{ fontSize:11, color:"#6B7A99", background:"#F2F5FA", border:"1px solid #E0E7F0", borderRadius:6, padding:"2px 8px" }}>{item.source}</span>
                                   <span style={{ fontSize:11, color:"#9AA5B8" }}>{item.publishedAt}</span>
