@@ -47,7 +47,8 @@ async function fetchNotionData() {
     const publishedAt = p["Published At"]?.date?.start?.slice(0,10) || "";
     const category    = p["category"]?.select?.name || "General Inquiry";
     const platforms   = (p["PI Platform"]?.multi_select || []).map(x => x.name);
-    if (title) results.push({ id:page.id, title, summary, source, url, publishedAt, category, platforms: platforms.length ? platforms : ["Other"] });
+    const featured    = p["Featured"]?.checkbox || false;
+    if (title) results.push({ id:page.id, title, summary, source, url, publishedAt, category, featured, platforms: platforms.length ? platforms : ["Other"] });
   }
   return results;
 }
@@ -91,7 +92,7 @@ export default function App() {
 
   useEffect(() => { setDrawerOpen(false); }, [selPI]);
 
-  const HOT = data.filter(d => ["Issue / Incident","New Inventory","Policy Update"].includes(d.category)).slice(0,3);
+  const HOT = data.filter(d => d.featured).slice(0, 5);
 
   useEffect(() => {
     if (HOT.length === 0) return;
@@ -140,7 +141,9 @@ export default function App() {
               <div style={{ width:8, height:8, borderRadius:"50%", background:"#22C55E", position:"absolute" }} />
               <div style={{ width:8, height:8, borderRadius:"50%", background:"#22C55E", position:"absolute", animation:"pulseRing 2s ease infinite" }} />
             </div>
-            <span style={{ color:"rgba(255,255,255,0.5)", fontSize:11 }}>Live Sync</span>
+            <span style={{ color:"rgba(255,255,255,0.5)", fontSize:11 }}>
+              {data.length > 0 ? `Updated: ${data[0].publishedAt}` : "Live Sync"}
+            </span>
           </div>
         </div>
       </div>
@@ -151,7 +154,7 @@ export default function App() {
           <div style={{ maxWidth:860, margin:"0 auto", display:"flex", alignItems:"stretch", height:30 }}>
             <div style={{ display:"flex", alignItems:"center", gap:6, paddingRight:14, borderRight:"1px solid rgba(255,255,255,0.15)", flexShrink:0 }}>
               <div style={{ width:5, height:5, borderRadius:"50%", background:MOLOCO_ORANGE }} />
-              <span style={{ fontSize:10, fontWeight:700, color:MOLOCO_ORANGE, letterSpacing:1.2, textTransform:"uppercase" }}>Latest</span>
+              <span style={{ fontSize:10, fontWeight:700, color:MOLOCO_ORANGE, letterSpacing:1.2, textTransform:"uppercase" }}>Featured</span>
             </div>
             <div style={{ flex:1, overflow:"hidden", paddingLeft:14, position:"relative" }}>
               {(() => {
@@ -265,6 +268,7 @@ export default function App() {
                                   ))}
                                   <span style={{ color:"#D1D9E6", fontSize:9 }}>·</span>
                                   <span style={{ fontSize:9, fontWeight:500, padding:"1px 6px", borderRadius:999, background:cs.bg, color:cs.text, border:"1px solid "+cs.border }}>{item.category}</span>
+                                  {item.featured && <span style={{ fontSize:9, fontWeight:700, padding:"1px 6px", borderRadius:999, background:"#FFF7ED", color:MOLOCO_ORANGE, border:"1px solid #FFD6B8" }}>⭐ Featured</span>}
                                 </div>
                                 <div style={{ fontWeight:800, fontSize:16, color:"#0F1729", lineHeight:1.4, marginTop:2 }}>{item.title}</div>
                                 <div style={{ marginTop:7, display:"flex", alignItems:"center", gap:8 }}>
