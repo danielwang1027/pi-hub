@@ -55,7 +55,9 @@ async function fetchNotionData() {
 
 const css = `
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { margin: 0; padding: 0; }
+  button, select, input { font-family: 'Montserrat', sans-serif; }
   @keyframes pulseRing { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.8)} }
   @keyframes fadeSlide { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
   @keyframes slideOut  { 0%{transform:translateY(0);opacity:1} 100%{transform:translateY(-100%);opacity:0} }
@@ -130,7 +132,7 @@ export default function App() {
       <style>{css}</style>
 
       {/* Header */}
-      <div style={{ background:"linear-gradient(135deg, "+MOLOCO_BLUE+" 0%, "+MOLOCO_NAVY+" 100%)" }}>
+      <div         style={{ background:"linear-gradient(120deg, #1a56f0 0%, "+MOLOCO_BLUE+" 40%, "+MOLOCO_NAVY+" 100%)" }}>
         <div style={{ maxWidth:860, margin:"0 auto", padding:"24px 24px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div>
             <div style={{ color:"#fff", fontWeight:900, fontSize:28, letterSpacing:.3 }}>PI Intelligence Hub</div>
@@ -270,7 +272,7 @@ export default function App() {
                                   <span style={{ fontSize:9, fontWeight:500, padding:"1px 6px", borderRadius:999, background:cs.bg, color:cs.text, border:"1px solid "+cs.border }}>{item.category}</span>
                                   {item.featured && <span style={{ fontSize:9, fontWeight:700, padding:"1px 6px", borderRadius:999, background:"#FFF7ED", color:MOLOCO_ORANGE, border:"1px solid #FFD6B8" }}>⭐ Featured</span>}
                                 </div>
-                                <div style={{ fontWeight:800, fontSize:16, color:"#0F1729", lineHeight:1.4, marginTop:2 }}>{item.title}</div>
+                                <div style={{ fontWeight:700, fontSize:15, color:"#0F1729", lineHeight:1.4, marginTop:2 }}>{item.title}</div>
                                 <div style={{ marginTop:7, display:"flex", alignItems:"center", gap:8 }}>
                                   <span style={{ fontSize:11, color:"#6B7A99", background:"#F2F5FA", border:"1px solid #E0E7F0", borderRadius:6, padding:"2px 8px" }}>{item.source}</span>
                                   <span style={{ fontSize:11, color:"#9AA5B8" }}>{item.publishedAt}</span>
