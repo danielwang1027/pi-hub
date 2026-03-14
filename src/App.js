@@ -270,7 +270,7 @@ export default function App() {
                                   <span style={{ fontSize:9, fontWeight:500, padding:"1px 6px", borderRadius:999, background:cs.bg, color:cs.text, border:"1px solid "+cs.border }}>{item.category}</span>
                                   {item.featured && <span style={{ fontSize:9, fontWeight:700, padding:"1px 6px", borderRadius:999, background:"#FFF7ED", color:MOLOCO_ORANGE, border:"1px solid #FFD6B8" }}>⭐ Featured</span>}
                                 </div>
-                                <div style={{ fontWeight:700, fontSize:15, color:"#0F1729", lineHeight:1.4, marginTop:2 }}>{item.title}</div>
+                                <div style={{ fontWeight:500, fontSize:15, color:"#0F1729", lineHeight:1.4, marginTop:2 }}>{item.title}</div>
                                 <div style={{ marginTop:7, display:"flex", alignItems:"center", gap:8 }}>
                                   <span style={{ fontSize:11, color:"#6B7A99", background:"#F2F5FA", border:"1px solid #E0E7F0", borderRadius:6, padding:"2px 8px" }}>{item.source}</span>
                                   <span style={{ fontSize:11, color:"#9AA5B8" }}>{item.publishedAt}</span>
