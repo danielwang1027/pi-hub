@@ -135,7 +135,7 @@ export default function App() {
       <div         style={{ background:"linear-gradient(120deg, #1a56f0 0%, "+MOLOCO_BLUE+" 40%, "+MOLOCO_NAVY+" 100%)" }}>
         <div style={{ maxWidth:860, margin:"0 auto", padding:"32px 24px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div>
-            <div style={{ color:"#fff", fontWeight:900, fontSize:32, letterSpacing:.3 }}>PI Intelligence Hub</div>
+            <div style={{ color:"#fff", fontWeight:700, fontSize:32, letterSpacing:.3 }}>PI Intelligence Hub</div>
             <div style={{ color:"rgba(255,255,255,0.6)", fontSize:14, marginTop:5 }}>Everything PI, zero noise.</div>
           </div>
           <div style={{ display:"flex", alignItems:"center", gap:8 }}>
