@@ -355,7 +355,7 @@ export default function App() {
         {loading && (
           <div style={{ textAlign:"center", padding:"60px 0" }}>
             <div className="spinner" />
-            <div style={{ color:"#9AA5B8", fontSize:14 }}>Connecting to Notion...</div>
+            <div style={{ color:"#9AA5B8", fontSize:14 }}>Loading latest PI updates...</div>
           </div>
         )}
         {error && (
