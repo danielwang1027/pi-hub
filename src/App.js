@@ -404,13 +404,15 @@ export default function App() {
                               </div>
                               <div style={{ color:"#BCC6D9", fontSize:11, flexShrink:0 }}>{open?"▲":"▼"}</div>
                             </div>
-                            {open && (
+                                                            {open && (
                               <div className="expand-body" style={{ marginTop:12, paddingTop:12, borderTop:"1px solid #EEF2FA", marginLeft:48 }}>
                                 <p style={{ fontSize:13, color:"#3D4F70", lineHeight:1.7, margin:0 }}>{item.summary}</p>
-                                <a href={item.url} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}
-                                  style={{ display:"inline-block", marginTop:10, fontSize:12, color:MOLOCO_BLUE, fontWeight:600, textDecoration:"none" }}>
-                                  View source →
-                                </a>
+                                {item.url && item.url !== "#" && (
+                                  <a href={item.url} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()}
+                                    style={{ display:"inline-block", marginTop:10, fontSize:12, color:MOLOCO_BLUE, fontWeight:600, textDecoration:"none" }}>
+                                    View source →
+                                  </a>
+                                )}
                               </div>
                             )}
                           </div>
