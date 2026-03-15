@@ -4,6 +4,7 @@ const MOLOCO_BLUE   = "#1249E9";
 const MOLOCO_NAVY   = "#0A2E8A";
 const MOLOCO_ORANGE = "#FF6B2B";
 const WEBHOOK_URL   = "https://moloco.app.n8n.cloud/webhook/pi-hub-data";
+const RESOURCES_URL = "https://moloco.app.n8n.cloud/webhook/pi-hub-resources";
 
 const PI_LIST = ["All","X","Kakao","Naver","Samsung","Xiaomi","Pinterest","Yahoo","LINE","Other"];
 
@@ -19,17 +20,6 @@ const CATEGORY_STYLE = {
 const PI_COLOR = {
   "X":"#000000","Kakao":"#F9E000","Naver":"#03C75A","Samsung":"#1428A0",
   "Xiaomi":"#FF6900","Pinterest":"#E60023","Yahoo":"#6001D2","LINE":"#06C755","Other":"#888888",
-};
-
-const QUICK_LINKS = {
-  "X":        [{ label:"Creative Specs", url:"#" },{ label:"Policy Guide", url:"#" },{ label:"Ad Manager", url:"#" }],
-  "Kakao":    [{ label:"Creative Specs", url:"#" },{ label:"Review Process", url:"#" },{ label:"Kakao Biz", url:"#" }],
-  "Naver":    [{ label:"Creative Specs", url:"#" },{ label:"SmartChannel Guide", url:"#" },{ label:"Naver Ads", url:"#" }],
-  "Samsung":  [{ label:"Creative Specs", url:"#" },{ label:"ADX Policy", url:"#" }],
-  "Xiaomi":   [{ label:"Creative Specs", url:"#" },{ label:"MI Ads Portal", url:"#" }],
-  "Pinterest":[{ label:"Creative Specs", url:"#" },{ label:"MAGNITE Setup", url:"#" },{ label:"Ads Manager", url:"#" }],
-  "Yahoo":    [{ label:"Creative Specs", url:"#" },{ label:"Yahoo DSP", url:"#" }],
-  "LINE":     [{ label:"Creative Specs", url:"#" },{ label:"APX1 Guide", url:"#" },{ label:"LINE Ads", url:"#" }],
 };
 
 async function fetchNotionData() {
@@ -51,6 +41,24 @@ async function fetchNotionData() {
     if (title) results.push({ id:page.id, title, summary, source, url, publishedAt, category, featured, platforms: platforms.length ? platforms : ["Other"] });
   }
   return results;
+}
+
+async function fetchResources() {
+  const res = await fetch(RESOURCES_URL);
+  if (!res.ok) return {};
+  const data = await res.json();
+  if (!data.results) return {};
+  const links = {};
+  for (const page of data.results) {
+    const p = page.properties;
+    const platform = p["Platform"]?.select?.name || "";
+    const title    = p["Title"]?.title?.[0]?.plain_text || "";
+    const url      = p["URL"]?.url || "#";
+    if (!platform || !title) continue;
+    if (!links[platform]) links[platform] = [];
+    links[platform].push({ label: title, url });
+  }
+  return links;
 }
 
 const css = `
@@ -85,11 +93,16 @@ export default function App() {
   const [drawerOpen,  setDrawerOpen]  = useState(false);
   const [tickerIdx,   setTickerIdx]   = useState(0);
   const [tickerPhase, setTickerPhase] = useState("idle");
+  const [quickLinks,  setQuickLinks]  = useState({});
 
   useEffect(() => {
     fetchNotionData()
       .then(d => { setData(d); setLoading(false); })
       .catch(e => { setError(e.message); setLoading(false); });
+  }, []);
+
+  useEffect(() => {
+    fetchResources().then(d => setQuickLinks(d)).catch(() => {});
   }, []);
 
   useEffect(() => { setDrawerOpen(false); }, [selPI]);
@@ -124,15 +137,17 @@ export default function App() {
     return acc;
   }, {});
 
-  const drawerEntries = selPI === "All" ? Object.entries(QUICK_LINKS) : Object.entries(QUICK_LINKS).filter(([pi]) => pi === selPI);
-  const showResources = selPI !== "Other" && drawerEntries.length > 0;
+  const drawerEntries = selPI === "All"
+    ? Object.entries(quickLinks)
+    : Object.entries(quickLinks).filter(([pi]) => pi === selPI);
+  const showResources = drawerEntries.length > 0;
 
   return (
     <div style={{ minHeight:"100vh", background:"#F7F9FC", fontFamily:"'Montserrat', sans-serif", paddingBottom: showResources ? 72 : 0 }}>
       <style>{css}</style>
 
       {/* Header */}
-      <div         style={{ background:"linear-gradient(120deg, #1a56f0 0%, "+MOLOCO_BLUE+" 40%, "+MOLOCO_NAVY+" 100%)" }}>
+      <div style={{ background:"linear-gradient(120deg, #1a56f0 0%, "+MOLOCO_BLUE+" 40%, "+MOLOCO_NAVY+" 100%)" }}>
         <div style={{ maxWidth:860, margin:"0 auto", padding:"32px 24px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div>
             <div style={{ color:"#fff", fontWeight:700, fontSize:36, letterSpacing:.3 }}>PI Intelligence Hub</div>
