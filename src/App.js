@@ -489,10 +489,10 @@ export default function App() {
                         const tc = pc==="#F9E000"?"#B8960C":pc;
                         return (
                           <div key={pi} style={{ background:"#F7F9FC", borderRadius:8, padding:"10px 12px", border:"1px solid #E8EDF5" }}>
-                            <div style={{ fontSize:11, fontWeight:800, color:tc, marginBottom:6, letterSpacing:.3 }}>{pi}</div>
+                            <div style={{ fontSize:12, fontWeight:800, color:tc, marginBottom:6, letterSpacing:.3 }}>{pi}</div>
                             {links.map(l => (
                               <a key={l.label} href={l.url} target="_blank" rel="noreferrer"
-                                style={{ display:"block", fontSize:10, color:"#4A5568", textDecoration:"none", padding:"3px 0", lineHeight:1.4 }}>
+                                style={{ display:"block", fontSize:12, color:"#4A5568", textDecoration:"none", padding:"3px 0", lineHeight:1.4 }}>
                                 → {l.label}
                               </a>
                             ))}
