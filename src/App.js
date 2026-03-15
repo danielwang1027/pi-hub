@@ -85,7 +85,7 @@ const css = `
 `;
 
 export default function App() {
-  const [authed, setAuthed] = useState(() => sessionStorage.getItem("pi_authed") === "1");
+  const [authed, setAuthed] = useState(() => { try { return sessionStorage.getItem("pi_authed") === "1"; } catch(e) { return false; } });
   const [pwInput, setPwInput] = useState("");
   const [pwError, setPwError] = useState(false);
   const [data,        setData]        = useState([]);
@@ -138,7 +138,7 @@ export default function App() {
           onKeyDown={e => {
             if (e.key === "Enter") {
               if (pwInput === ACCESS_PASSWORD) {
-                sessionStorage.setItem("pi_authed", "1");
+                try { sessionStorage.setItem("pi_authed", "1"); } catch(e) {}
                 setAuthed(true);
               } else {
                 setPwError(true);
@@ -151,7 +151,7 @@ export default function App() {
         <button
           onClick={() => {
             if (pwInput === ACCESS_PASSWORD) {
-              sessionStorage.setItem("pi_authed", "1");
+              try { sessionStorage.setItem("pi_authed", "1"); } catch(e) {}
               setAuthed(true);
             } else {
               setPwError(true);
