@@ -332,7 +332,11 @@ export default function App() {
                   <button onClick={() => setDrawerOpen(false)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:15, color:"#9AA5B8" }}>✕</button>
                 </div>
                 <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(130px, 1fr))", gap:10 }}>
-                  {drawerEntries.map(([pi, links]) => {
+                  {[...drawerEntries].sort(([a], [b]) => {
+                    if (a === "All") return -1;
+                    if (b === "All") return 1;
+                    return 0;
+                  }).map(([pi, links]) => {
                     const pc = PI_COLOR[pi] || "#888";
                     const tc = pc==="#F9E000"?"#B8960C":pc;
                     return (
@@ -340,7 +344,7 @@ export default function App() {
                         <div style={{ fontSize:11, fontWeight:800, color:tc, marginBottom:6, letterSpacing:.3 }}>{pi}</div>
                         {links.map(l => (
                           <a key={l.label} href={l.url} target="_blank" rel="noreferrer"
-                            style={{ display:"block", fontSize:11, color:"#4A5568", textDecoration:"none", padding:"3px 0" }}>
+                            style={{ display:"block", fontSize:10, color:"#4A5568", textDecoration:"none", padding:"3px 0", lineHeight:1.4 }}>
                             → {l.label}
                           </a>
                         ))}
