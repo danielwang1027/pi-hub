@@ -80,7 +80,13 @@ const css = `
   .expand-body{animation:fadeSlide .2s ease}
   .tab-pill{transition:background .2s,color .2s,box-shadow .2s}
   .drawer{animation:slideUp .25s ease forwards}
-  .spinner{width:28px;height:28px;border:3px solid #E8EDF5;border-top-color:#1249E9;border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+  @media (max-width: 600px) {
+    .sticky-bar { padding: 10px 16px !important; }
+    .main-content { padding: 16px !important; }
+    .header-inner { padding: 20px 16px !important; }
+    .ticker-inner { padding: 0 16px !important; }
+    .submit-btn { display: none !important; }
+  }
 `;
 
 export default function App() {
@@ -195,7 +201,7 @@ export default function App() {
 
           {/* Header */}
           <div style={{ background:"linear-gradient(120deg, #1a56f0 0%, "+MOLOCO_BLUE+" 40%, "+MOLOCO_NAVY+" 100%)" }}>
-            <div style={{ maxWidth:1100, margin:"0 auto", padding:"32px 32px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+                          <div style={{ maxWidth:1100, margin:"0 auto", padding:"32px 32px", display:"flex", alignItems:"center", justifyContent:"space-between" }} className="header-inner">
               <div>
                 <div style={{ color:"#fff", fontWeight:700, fontSize:36, letterSpacing:.3 }}>PI Intelligence Hub</div>
                 <div style={{ color:"rgba(255,255,255,0.6)", fontSize:18, marginTop:5 }}>All PI discussions, one place.</div>
@@ -240,7 +246,7 @@ export default function App() {
 
           {/* Sticky Filter Bar */}
           <div style={{ position:"sticky", top:0, zIndex:40, background:"#F7F9FC", borderBottom:"1px solid #E8EDF5", boxShadow:"0 2px 8px rgba(0,0,0,0.06)" }}>
-            <div style={{ maxWidth:1100, margin:"0 auto", padding:"12px 32px" }}>
+            <div style={{ maxWidth:1100, margin:"0 auto", padding:"12px 32px" }} className="sticky-bar">
               <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:10 }}>
                 {PI_LIST.map(pi => {
                   const active = selPI === pi;
@@ -273,6 +279,7 @@ export default function App() {
                   {Object.keys(CATEGORY_STYLE).map(c => <option key={c}>{c}</option>)}
                 </select>
                 <button onClick={() => { setSubmitOpen(true); setSubmitDone(false); setSubmitForm({ title:"", summary:"", platforms:[], category:"", author:"", url:"" }); }}
+                  className="submit-btn"
                   style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", borderRadius:8, background:"#fff", border:"1.5px solid "+MOLOCO_BLUE, cursor:"pointer", color:MOLOCO_BLUE, fontSize:12, fontWeight:700 }}>
                   💡 Submit your thoughts!
                 </button>
@@ -284,7 +291,7 @@ export default function App() {
           </div>
 
           {/* Main Content */}
-          <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 32px" }}>
+          <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 32px" }} className="main-content">
             {loading && (
               <div style={{ textAlign:"center", padding:"60px 0" }}>
                 <div className="spinner" />
