@@ -339,7 +339,7 @@ export default function App() {
             </select>
             <button onClick={() => { setSubmitOpen(true); setSubmitDone(false); setSubmitForm({ title:"", summary:"", platforms:[], category:"", author:"", url:"" }); }}
               style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", borderRadius:8, background:"#fff", border:"1.5px solid "+MOLOCO_BLUE, cursor:"pointer", color:MOLOCO_BLUE, fontSize:12, fontWeight:700, fontFamily:"'Montserrat', sans-serif" }}>
-              💡 Submit your thoughts!
+              💡 Share your thoughts!
             </button>
             <div style={{ marginLeft:"auto", background:MOLOCO_BLUE+"12", border:"1.5px solid "+MOLOCO_BLUE+"30", borderRadius:8, padding:"5px 14px", fontSize:12, color:MOLOCO_BLUE, fontWeight:600 }}>
               {filtered.length} items
