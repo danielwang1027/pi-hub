@@ -298,10 +298,11 @@ export default function App() {
         </div>
       )}
 
-      {/* Main */}
-      <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 32px" }}>
-        {/* PI Tabs */}
-        <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:20 }}>
+      {/* Sticky Filter Bar */}
+      <div style={{ position:"sticky", top:0, zIndex:40, background:"#F7F9FC", borderBottom:"1px solid #E8EDF5", boxShadow:"0 2px 8px rgba(0,0,0,0.06)" }}>
+        <div style={{ maxWidth:1100, margin:"0 auto", padding:"12px 32px" }}>
+          {/* PI Tabs */}
+          <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:10 }}>
           {PI_LIST.map(pi => {
             const active = selPI === pi;
             const color  = pi === "All" ? MOLOCO_BLUE : (PI_COLOR[pi] || "#888");
@@ -317,33 +318,38 @@ export default function App() {
           })}
         </div>
 
-        {/* Search */}
-        <div style={{ position:"relative", marginBottom:16 }}>
-          <span style={{ position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", fontSize:14, color:"#9AA5B8", pointerEvents:"none" }}>🔍</span>
-          <input type="text" placeholder="Search by title, summary or platform..."
-            value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
-            style={{ width:"100%", padding:"10px 14px 10px 38px", borderRadius:10, border:"1.5px solid #DDE4F0", background:"#fff", fontSize:13, fontFamily:"'Montserrat', sans-serif", color:"#0F1729", outline:"none" }} />
-          {searchQuery && (
-            <button onClick={() => setSearchQuery("")}
-              style={{ position:"absolute", right:12, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", cursor:"pointer", fontSize:14, color:"#9AA5B8" }}>✕</button>
-          )}
-        </div>
+          {/* Search */}
+          <div style={{ position:"relative", marginBottom:10 }}>
+            <span style={{ position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", fontSize:14, color:"#9AA5B8", pointerEvents:"none" }}>🔍</span>
+            <input type="text" placeholder="Search by title, summary or platform..."
+              value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+              style={{ width:"100%", padding:"9px 14px 9px 38px", borderRadius:10, border:"1.5px solid #DDE4F0", background:"#fff", fontSize:13, fontFamily:"'Montserrat', sans-serif", color:"#0F1729", outline:"none" }} />
+            {searchQuery && (
+              <button onClick={() => setSearchQuery("")}
+                style={{ position:"absolute", right:12, top:"50%", transform:"translateY(-50%)", background:"none", border:"none", cursor:"pointer", fontSize:14, color:"#9AA5B8" }}>✕</button>
+            )}
+          </div>
 
-        {/* Category + Count */}
-        <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:28 }}>
-          <select value={selCat} onChange={e => setSelCat(e.target.value)}
-            style={{ fontSize:13, padding:"6px 12px", borderRadius:8, border:"1.5px solid #DDE4F0", background:"#fff", color:"#333", outline:"none", cursor:"pointer", fontFamily:"'Montserrat', sans-serif" }}>
-            <option value="All">All Categories</option>
-            {Object.keys(CATEGORY_STYLE).map(c => <option key={c}>{c}</option>)}
-          </select>
-          <button onClick={() => { setSubmitOpen(true); setSubmitDone(false); setSubmitForm({ title:"", summary:"", platforms:[], category:"", author:"", url:"" }); }}
-            style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", borderRadius:8, background:"#fff", border:"1.5px solid "+MOLOCO_BLUE, cursor:"pointer", color:MOLOCO_BLUE, fontSize:12, fontWeight:700, fontFamily:"'Montserrat', sans-serif" }}>
-            💡 Submit your thoughts!
-          </button>
-          <div style={{ marginLeft:"auto", background:MOLOCO_BLUE+"12", border:"1.5px solid "+MOLOCO_BLUE+"30", borderRadius:8, padding:"5px 14px", fontSize:12, color:MOLOCO_BLUE, fontWeight:600 }}>
-            {filtered.length} items
+          {/* Category + Submit + Count */}
+          <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+            <select value={selCat} onChange={e => setSelCat(e.target.value)}
+              style={{ fontSize:13, padding:"6px 12px", borderRadius:8, border:"1.5px solid #DDE4F0", background:"#fff", color:"#333", outline:"none", cursor:"pointer", fontFamily:"'Montserrat', sans-serif" }}>
+              <option value="All">All Categories</option>
+              {Object.keys(CATEGORY_STYLE).map(c => <option key={c}>{c}</option>)}
+            </select>
+            <button onClick={() => { setSubmitOpen(true); setSubmitDone(false); setSubmitForm({ title:"", summary:"", platforms:[], category:"", author:"", url:"" }); }}
+              style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", borderRadius:8, background:"#fff", border:"1.5px solid "+MOLOCO_BLUE, cursor:"pointer", color:MOLOCO_BLUE, fontSize:12, fontWeight:700, fontFamily:"'Montserrat', sans-serif" }}>
+              💡 Submit your thoughts!
+            </button>
+            <div style={{ marginLeft:"auto", background:MOLOCO_BLUE+"12", border:"1.5px solid "+MOLOCO_BLUE+"30", borderRadius:8, padding:"5px 14px", fontSize:12, color:MOLOCO_BLUE, fontWeight:600 }}>
+              {filtered.length} items
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* Main */}
+      <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 32px" }}>
 
         {/* Loading / Error / Content */}
         {loading && (
