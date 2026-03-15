@@ -94,6 +94,10 @@ export default function App() {
   const [tickerIdx,   setTickerIdx]   = useState(0);
   const [tickerPhase, setTickerPhase] = useState("idle");
   const [quickLinks,  setQuickLinks]  = useState({});
+  const [submitOpen,  setSubmitOpen]  = useState(false);
+  const [submitForm,  setSubmitForm]  = useState({ title:"", summary:"", platforms:[], category:"", author:"", url:"" });
+  const [submitting,  setSubmitting]  = useState(false);
+  const [submitDone,  setSubmitDone]  = useState(false);
 
   useEffect(() => {
     fetchNotionData()
@@ -160,8 +164,115 @@ export default function App() {
             </div>
             <span style={{ color:"rgba(255,255,255,0.5)", fontSize:11 }}>Live Sync</span>
           </div>
+          <button onClick={() => { setSubmitOpen(true); setSubmitDone(false); setSubmitForm({ title:"", summary:"", platforms:[], category:"", author:"", url:"" }); }}
+            style={{ display:"flex", alignItems:"center", gap:6, padding:"8px 16px", borderRadius:999, background:"rgba(255,255,255,0.15)", border:"1.5px solid rgba(255,255,255,0.3)", cursor:"pointer", color:"#fff", fontSize:13, fontWeight:600, fontFamily:"'Montserrat', sans-serif" }}>
+            <span style={{ fontSize:16, lineHeight:1 }}>+</span> Submit
+          </button>
         </div>
       </div>
+
+      {/* Submit Modal */}
+      {submitOpen && (
+        <div onClick={() => setSubmitOpen(false)}
+          style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.45)", zIndex:100, display:"flex", alignItems:"center", justifyContent:"center", padding:24 }}>
+          <div onClick={e => e.stopPropagation()}
+            style={{ background:"#fff", borderRadius:16, width:"100%", maxWidth:520, padding:28, boxShadow:"0 20px 60px rgba(0,0,0,0.2)", fontFamily:"'Montserrat', sans-serif" }}>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:20 }}>
+              <div style={{ fontWeight:800, fontSize:18, color:"#0F1729" }}>Submit a PI Update</div>
+              <button onClick={() => setSubmitOpen(false)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:18, color:"#9AA5B8" }}>✕</button>
+            </div>
+            {submitDone ? (
+              <div style={{ textAlign:"center", padding:"32px 0" }}>
+                <div style={{ fontSize:40, marginBottom:12 }}>✅</div>
+                <div style={{ fontWeight:700, fontSize:16, color:"#0F1729", marginBottom:6 }}>Submitted!</div>
+                <div style={{ fontSize:13, color:"#9AA5B8" }}>Your update has been published.</div>
+                <button onClick={() => setSubmitOpen(false)}
+                  style={{ marginTop:20, padding:"10px 24px", borderRadius:999, background:MOLOCO_BLUE, border:"none", cursor:"pointer", color:"#fff", fontSize:13, fontWeight:600, fontFamily:"'Montserrat', sans-serif" }}>
+                  Close
+                </button>
+              </div>
+            ) : (
+              <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
+                {/* PI Platform */}
+                <div>
+                  <div style={{ fontSize:12, fontWeight:600, color:"#4A5568", marginBottom:6 }}>PI Platform <span style={{ color:"#E53E3E" }}>*</span></div>
+                  <div style={{ display:"flex", flexWrap:"wrap", gap:6 }}>
+                    {["X","Kakao","Naver","Samsung","Xiaomi","Pinterest","Yahoo","LINE","Other"].map(pi => {
+                      const active = submitForm.platforms.includes(pi);
+                      const color = PI_COLOR[pi] || "#888";
+                      return (
+                        <button key={pi} onClick={() => setSubmitForm(f => ({ ...f, platforms: active ? f.platforms.filter(p => p !== pi) : [...f.platforms, pi] }))}
+                          style={{ padding:"4px 12px", borderRadius:999, fontSize:12, fontWeight:600, cursor:"pointer", border:`1.5px solid ${active ? color : "#DDE4F0"}`, background: active ? color : "#fff", color: active ? (pi==="Kakao"?"#333":"#fff") : "#555", fontFamily:"'Montserrat', sans-serif" }}>
+                          {pi}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                {/* Category */}
+                <div>
+                  <div style={{ fontSize:12, fontWeight:600, color:"#4A5568", marginBottom:6 }}>Category <span style={{ color:"#E53E3E" }}>*</span></div>
+                  <select value={submitForm.category} onChange={e => setSubmitForm(f => ({ ...f, category: e.target.value }))}
+                    style={{ width:"100%", padding:"9px 12px", borderRadius:8, border:"1.5px solid #DDE4F0", fontSize:13, color:"#0F1729", outline:"none", fontFamily:"'Montserrat', sans-serif" }}>
+                    <option value="">Select a category...</option>
+                    {Object.keys(CATEGORY_STYLE).map(c => <option key={c}>{c}</option>)}
+                  </select>
+                </div>
+                {/* Title */}
+                <div>
+                  <div style={{ fontSize:12, fontWeight:600, color:"#4A5568", marginBottom:6 }}>Title <span style={{ color:"#E53E3E" }}>*</span></div>
+                  <input type="text" placeholder="Brief title of the update..." value={submitForm.title} onChange={e => setSubmitForm(f => ({ ...f, title: e.target.value }))}
+                    style={{ width:"100%", padding:"9px 12px", borderRadius:8, border:"1.5px solid #DDE4F0", fontSize:13, color:"#0F1729", outline:"none", fontFamily:"'Montserrat', sans-serif" }} />
+                </div>
+                {/* Summary */}
+                <div>
+                  <div style={{ fontSize:12, fontWeight:600, color:"#4A5568", marginBottom:6 }}>Summary <span style={{ color:"#E53E3E" }}>*</span></div>
+                  <textarea placeholder="Describe the update in detail..." value={submitForm.summary} onChange={e => setSubmitForm(f => ({ ...f, summary: e.target.value }))}
+                    rows={4} style={{ width:"100%", padding:"9px 12px", borderRadius:8, border:"1.5px solid #DDE4F0", fontSize:13, color:"#0F1729", outline:"none", resize:"vertical", fontFamily:"'Montserrat', sans-serif" }} />
+                </div>
+                {/* Author + URL */}
+                <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:12 }}>
+                  <div>
+                    <div style={{ fontSize:12, fontWeight:600, color:"#4A5568", marginBottom:6 }}>Your Name <span style={{ color:"#9AA5B8", fontWeight:400 }}>(optional)</span></div>
+                    <input type="text" placeholder="Anonymous" value={submitForm.author} onChange={e => setSubmitForm(f => ({ ...f, author: e.target.value }))}
+                      style={{ width:"100%", padding:"9px 12px", borderRadius:8, border:"1.5px solid #DDE4F0", fontSize:13, color:"#0F1729", outline:"none", fontFamily:"'Montserrat', sans-serif" }} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize:12, fontWeight:600, color:"#4A5568", marginBottom:6 }}>Source URL <span style={{ color:"#9AA5B8", fontWeight:400 }}>(optional)</span></div>
+                    <input type="text" placeholder="https://..." value={submitForm.url} onChange={e => setSubmitForm(f => ({ ...f, url: e.target.value }))}
+                      style={{ width:"100%", padding:"9px 12px", borderRadius:8, border:"1.5px solid #DDE4F0", fontSize:13, color:"#0F1729", outline:"none", fontFamily:"'Montserrat', sans-serif" }} />
+                  </div>
+                </div>
+                {/* Submit Button */}
+                <button
+                  disabled={submitting || !submitForm.title || !submitForm.summary || !submitForm.category || submitForm.platforms.length === 0}
+                  onClick={async () => {
+                    setSubmitting(true);
+                    try {
+                      await fetch("https://moloco.app.n8n.cloud/webhook/pi-hub-submit", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          title: submitForm.title,
+                          summary: submitForm.summary,
+                          platforms: submitForm.platforms,
+                          category: submitForm.category,
+                          author: submitForm.author || "Community",
+                          url: submitForm.url || null
+                        })
+                      });
+                      setSubmitDone(true);
+                    } catch(e) {}
+                    setSubmitting(false);
+                  }}
+                  style={{ marginTop:4, padding:"12px", borderRadius:10, background: (!submitForm.title || !submitForm.summary || !submitForm.category || submitForm.platforms.length === 0) ? "#DDE4F0" : MOLOCO_BLUE, border:"none", cursor: (!submitForm.title || !submitForm.summary || !submitForm.category || submitForm.platforms.length === 0) ? "not-allowed" : "pointer", color: (!submitForm.title || !submitForm.summary || !submitForm.category || submitForm.platforms.length === 0) ? "#9AA5B8" : "#fff", fontSize:14, fontWeight:700, fontFamily:"'Montserrat', sans-serif" }}>
+                  {submitting ? "Submitting..." : "Submit Update"}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Ticker */}
       {HOT.length > 0 && (
