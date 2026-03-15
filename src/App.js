@@ -164,10 +164,6 @@ export default function App() {
             </div>
             <span style={{ color:"rgba(255,255,255,0.5)", fontSize:11 }}>Live Sync</span>
           </div>
-          <button onClick={() => { setSubmitOpen(true); setSubmitDone(false); setSubmitForm({ title:"", summary:"", platforms:[], category:"", author:"", url:"" }); }}
-            style={{ display:"flex", alignItems:"center", gap:6, padding:"8px 16px", borderRadius:999, background:"rgba(255,255,255,0.15)", border:"1.5px solid rgba(255,255,255,0.3)", cursor:"pointer", color:"#fff", fontSize:13, fontWeight:600, fontFamily:"'Montserrat', sans-serif" }}>
-            <span style={{ fontSize:16, lineHeight:1 }}>+</span> Submit
-          </button>
         </div>
       </div>
 
@@ -340,6 +336,10 @@ export default function App() {
             <option value="All">All Categories</option>
             {Object.keys(CATEGORY_STYLE).map(c => <option key={c}>{c}</option>)}
           </select>
+          <button onClick={() => { setSubmitOpen(true); setSubmitDone(false); setSubmitForm({ title:"", summary:"", platforms:[], category:"", author:"", url:"" }); }}
+            style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", borderRadius:8, background:"#fff", border:"1.5px solid "+MOLOCO_BLUE, cursor:"pointer", color:MOLOCO_BLUE, fontSize:12, fontWeight:700, fontFamily:"'Montserrat', sans-serif" }}>
+            💡 Submit your thoughts!
+          </button>
           <div style={{ marginLeft:"auto", background:MOLOCO_BLUE+"12", border:"1.5px solid "+MOLOCO_BLUE+"30", borderRadius:8, padding:"5px 14px", fontSize:12, color:MOLOCO_BLUE, fontWeight:600 }}>
             {filtered.length} items
           </div>
