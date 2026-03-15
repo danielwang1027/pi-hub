@@ -22,6 +22,8 @@ const PI_COLOR = {
   "Xiaomi":"#FF6900","Pinterest":"#E60023","Yahoo":"#6001D2","LINE":"#06C755","Other":"#888888",
 };
 
+const ACCESS_PASSWORD = "pihub2026";
+
 async function fetchNotionData() {
   const res = await fetch(WEBHOOK_URL);
   if (!res.ok) throw new Error("Webhook error: " + res.status);
@@ -83,6 +85,9 @@ const css = `
 `;
 
 export default function App() {
+  const [authed, setAuthed] = useState(() => sessionStorage.getItem("pi_authed") === "1");
+  const [pwInput, setPwInput] = useState("");
+  const [pwError, setPwError] = useState(false);
   const [data,        setData]        = useState([]);
   const [loading,     setLoading]     = useState(true);
   const [error,       setError]       = useState(null);
@@ -118,7 +123,48 @@ export default function App() {
     let t;
     if (tickerPhase === "idle")     t = setTimeout(() => setTickerPhase("out"), 3000);
     else if (tickerPhase === "out") t = setTimeout(() => { setTickerIdx(i => (i+1)%HOT.length); setTickerPhase("idle"); }, 400);
-    return () => clearTimeout(t);
+    if (!authed) return (
+    <div style={{ minHeight:"100vh", background:"linear-gradient(135deg, #1a56f0 0%, "+MOLOCO_BLUE+" 40%, "+MOLOCO_NAVY+" 100%)", display:"flex", alignItems:"center", justifyContent:"center", fontFamily:"'Montserrat', sans-serif" }}>
+      <style>{css}</style>
+      <div style={{ background:"#fff", borderRadius:20, padding:"40px 36px", width:"100%", maxWidth:380, boxShadow:"0 20px 60px rgba(0,0,0,0.2)", textAlign:"center" }}>
+        <div style={{ fontSize:32, marginBottom:12 }}>🔒</div>
+        <div style={{ fontWeight:800, fontSize:20, color:"#0F1729", marginBottom:6 }}>PI Intelligence Hub</div>
+        <div style={{ fontSize:13, color:"#9AA5B8", marginBottom:24 }}>Enter password to continue</div>
+        <input
+          type="password"
+          placeholder="Password"
+          value={pwInput}
+          onChange={e => { setPwInput(e.target.value); setPwError(false); }}
+          onKeyDown={e => {
+            if (e.key === "Enter") {
+              if (pwInput === ACCESS_PASSWORD) {
+                sessionStorage.setItem("pi_authed", "1");
+                setAuthed(true);
+              } else {
+                setPwError(true);
+              }
+            }
+          }}
+          style={{ width:"100%", padding:"11px 14px", borderRadius:10, border:`1.5px solid ${pwError ? "#E53E3E" : "#DDE4F0"}`, fontSize:14, outline:"none", fontFamily:"'Montserrat', sans-serif", marginBottom:8, textAlign:"center" }}
+        />
+        {pwError && <div style={{ fontSize:12, color:"#E53E3E", marginBottom:8 }}>Incorrect password</div>}
+        <button
+          onClick={() => {
+            if (pwInput === ACCESS_PASSWORD) {
+              sessionStorage.setItem("pi_authed", "1");
+              setAuthed(true);
+            } else {
+              setPwError(true);
+            }
+          }}
+          style={{ width:"100%", padding:"12px", borderRadius:10, background:MOLOCO_BLUE, border:"none", cursor:"pointer", color:"#fff", fontSize:14, fontWeight:700, fontFamily:"'Montserrat', sans-serif" }}>
+          Enter
+        </button>
+      </div>
+    </div>
+  );
+
+  return () => clearTimeout(t);
   }, [tickerPhase, tickerIdx, HOT.length]);
 
   const scrollToCard = (id) => {
@@ -339,7 +385,7 @@ export default function App() {
             </select>
             <button onClick={() => { setSubmitOpen(true); setSubmitDone(false); setSubmitForm({ title:"", summary:"", platforms:[], category:"", author:"", url:"" }); }}
               style={{ display:"flex", alignItems:"center", gap:6, padding:"7px 14px", borderRadius:8, background:"#fff", border:"1.5px solid "+MOLOCO_BLUE, cursor:"pointer", color:MOLOCO_BLUE, fontSize:12, fontWeight:700, fontFamily:"'Montserrat', sans-serif" }}>
-              💡 Share your thoughts!
+              💡 Submit your thoughts!
             </button>
             <div style={{ marginLeft:"auto", background:MOLOCO_BLUE+"12", border:"1.5px solid "+MOLOCO_BLUE+"30", borderRadius:8, padding:"5px 14px", fontSize:12, color:MOLOCO_BLUE, fontWeight:600 }}>
               {filtered.length} items
