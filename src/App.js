@@ -331,7 +331,7 @@ export default function App() {
                   </div>
                   <button onClick={() => setDrawerOpen(false)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:15, color:"#9AA5B8" }}>✕</button>
                 </div>
-                <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(180px, 1fr))", gap:12 }}>
+                <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(220px, 1fr))", gap:12 }}>
                   {[...drawerEntries].sort(([a], [b]) => {
                     if (a === "All") return -1;
                     if (b === "All") return 1;
