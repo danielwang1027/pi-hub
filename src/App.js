@@ -476,7 +476,7 @@ export default function App() {
           {showResources && (
             <div style={{ position:"fixed", bottom:0, left:0, right:0, zIndex:50 }}>
               {drawerOpen && (
-                <div className="drawer" style={{ background:"#fff", borderTop:"1px solid #E8EDF5", boxShadow:"0 -4px 24px rgba(0,0,0,0.10)" }}>
+                <div className="drawer" style={{ background:"#fff", borderTop:"1px solid #E8EDF5", boxShadow:"0 -4px 24px rgba(0,0,0,0.10)", maxHeight:"70vh", overflowY:"auto" }}>
                   <div style={{ maxWidth:1100, margin:"0 auto", padding:"16px 32px 20px" }}>
                     <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14 }}>
                       <div style={{ display:"flex", alignItems:"center", gap:8 }}>
