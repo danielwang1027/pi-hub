@@ -148,7 +148,7 @@ export default function App() {
 
       {/* Header */}
       <div style={{ background:"linear-gradient(120deg, #1a56f0 0%, "+MOLOCO_BLUE+" 40%, "+MOLOCO_NAVY+" 100%)" }}>
-        <div style={{ maxWidth:860, margin:"0 auto", padding:"32px 24px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
+        <div style={{ maxWidth:1100, margin:"0 auto", padding:"32px 32px", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
           <div>
             <div style={{ color:"#fff", fontWeight:700, fontSize:36, letterSpacing:.3 }}>PI Intelligence Hub</div>
             <div style={{ color:"rgba(255,255,255,0.6)", fontSize:18, marginTop:5 }}>All PI discussions, one place.</div>
@@ -166,7 +166,7 @@ export default function App() {
       {/* Ticker */}
       {HOT.length > 0 && (
         <div style={{ background:MOLOCO_NAVY, padding:"0 24px" }}>
-          <div style={{ maxWidth:860, margin:"0 auto", display:"flex", alignItems:"stretch", height:30 }}>
+          <div style={{ maxWidth:1100, margin:"0 auto", display:"flex", alignItems:"stretch", height:30 }}>
             <div style={{ display:"flex", alignItems:"center", gap:6, paddingRight:14, borderRight:"1px solid rgba(255,255,255,0.15)", flexShrink:0 }}>
               <div style={{ width:5, height:5, borderRadius:"50%", background:MOLOCO_ORANGE }} />
               <span style={{ fontSize:10, fontWeight:700, color:MOLOCO_ORANGE, letterSpacing:1.2, textTransform:"uppercase" }}>Featured</span>
@@ -192,7 +192,7 @@ export default function App() {
       )}
 
       {/* Main */}
-      <div style={{ maxWidth:860, margin:"0 auto", padding:"28px 24px" }}>
+      <div style={{ maxWidth:1100, margin:"0 auto", padding:"28px 32px" }}>
         {/* PI Tabs */}
         <div style={{ display:"flex", flexWrap:"wrap", gap:8, marginBottom:20 }}>
           {PI_LIST.map(pi => {
@@ -322,7 +322,7 @@ export default function App() {
         <div style={{ position:"fixed", bottom:0, left:0, right:0, zIndex:50, fontFamily:"'Montserrat', sans-serif" }}>
           {drawerOpen && (
             <div className="drawer" style={{ background:"#fff", borderTop:"1px solid #E8EDF5", boxShadow:"0 -4px 24px rgba(0,0,0,0.10)" }}>
-              <div style={{ maxWidth:860, margin:"0 auto", padding:"16px 24px 20px" }}>
+              <div style={{ maxWidth:1100, margin:"0 auto", padding:"16px 32px 20px" }}>
                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14 }}>
                   <div style={{ display:"flex", alignItems:"center", gap:8 }}>
                     <div style={{ width:6, height:6, borderRadius:"50%", background:MOLOCO_BLUE }} />
