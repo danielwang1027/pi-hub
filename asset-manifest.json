@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/pi-hub/static/js/main.13979abe.js",
+    "index.html": "/pi-hub/index.html",
+    "main.13979abe.js.map": "/pi-hub/static/js/main.13979abe.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.13979abe.js"
+  ]
+}
