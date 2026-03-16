@@ -480,10 +480,13 @@ export default function App() {
 
                   {/* Toolkit 分组 */}
                   <div style={{ marginBottom: showResources ? 20 : 0 }}>
-                    <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
-                      <div style={{ width:6, height:6, borderRadius:"50%", background:MOLOCO_ORANGE }} />
-                      <span style={{ fontSize:13, fontWeight:700, color:"#0F1729" }}>Toolkit</span>
-                      <span style={{ fontSize:11, color:"#9AA5B8" }}>Internal tools & automations</span>
+                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:12 }}>
+                      <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                        <div style={{ width:6, height:6, borderRadius:"50%", background:MOLOCO_ORANGE }} />
+                        <span style={{ fontSize:13, fontWeight:700, color:"#0F1729" }}>Toolkit</span>
+                        <span style={{ fontSize:11, color:"#9AA5B8" }}>Internal tools & automations</span>
+                      </div>
+                      <button onClick={() => setDrawerOpen(false)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:15, color:"#9AA5B8" }}>✕</button>
                     </div>
                     <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(260px, 1fr))", gap:12 }}>
                       <div style={{ background:"#FFF7F4", borderRadius:8, padding:"10px 12px", border:"1px solid #FFD6B8" }}>
@@ -533,12 +536,6 @@ export default function App() {
                     </>
                   )}
 
-                  {/* 无 Resources 时的关闭按钮 */}
-                  {!showResources && (
-                    <div style={{ display:"flex", justifyContent:"flex-end", marginTop:8 }}>
-                      <button onClick={() => setDrawerOpen(false)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:15, color:"#9AA5B8" }}>✕</button>
-                    </div>
-                  )}
 
                 </div>
               </div>
