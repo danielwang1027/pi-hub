@@ -2,6 +2,7 @@
   "name": "pi-hub",
   "version": "1.0.0",
   "private": true,
+  "homepage": "https://danielwang1027.github.io/pi-hub",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
