@@ -197,11 +197,11 @@ export default function App() {
 
       {/* Main App */}
       {authed && (
-        <div style={{ paddingBottom: showResources ? 72 : 0 }}>
+        <div style={{ paddingBottom: 72 }}>
 
           {/* Header */}
           <div style={{ background:"linear-gradient(120deg, #1a56f0 0%, "+MOLOCO_BLUE+" 40%, "+MOLOCO_NAVY+" 100%)" }}>
-                          <div style={{ maxWidth:1100, margin:"0 auto", padding:"32px 32px", display:"flex", alignItems:"center", justifyContent:"space-between" }} className="header-inner">
+            <div style={{ maxWidth:1100, margin:"0 auto", padding:"32px 32px", display:"flex", alignItems:"center", justifyContent:"space-between" }} className="header-inner">
               <div>
                 <div style={{ color:"#fff", fontWeight:700, fontSize:36, letterSpacing:.3 }}>PI Intelligence Hub</div>
                 <div style={{ color:"rgba(255,255,255,0.6)", fontSize:18, marginTop:5 }}>All PI discussions, one place.</div>
@@ -472,54 +472,86 @@ export default function App() {
             </div>
           )}
 
-          {/* Bottom Resources Bar */}
-          {showResources && (
-            <div style={{ position:"fixed", bottom:0, left:0, right:0, zIndex:50 }}>
-              {drawerOpen && (
-                <div className="drawer" style={{ background:"#fff", borderTop:"1px solid #E8EDF5", boxShadow:"0 -4px 24px rgba(0,0,0,0.10)", maxHeight:"70vh", overflowY:"auto" }}>
-                  <div style={{ maxWidth:1100, margin:"0 auto", padding:"16px 32px 20px" }}>
-                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14 }}>
-                      <div style={{ display:"flex", alignItems:"center", gap:8 }}>
-                        <div style={{ width:6, height:6, borderRadius:"50%", background:MOLOCO_BLUE }} />
-                        <span style={{ fontSize:13, fontWeight:700, color:"#0F1729" }}>{selPI==="All"?"All PI Resource Links":selPI+" Resource Links"}</span>
-                        <span style={{ fontSize:11, color:"#9AA5B8" }}>Specs, portals & guides</span>
-                      </div>
-                      <button onClick={() => setDrawerOpen(false)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:15, color:"#9AA5B8" }}>✕</button>
+          {/* Bottom Resources + Toolkit Bar */}
+          <div style={{ position:"fixed", bottom:0, left:0, right:0, zIndex:50 }}>
+            {drawerOpen && (
+              <div className="drawer" style={{ background:"#fff", borderTop:"1px solid #E8EDF5", boxShadow:"0 -4px 24px rgba(0,0,0,0.10)", maxHeight:"70vh", overflowY:"auto" }}>
+                <div style={{ maxWidth:1100, margin:"0 auto", padding:"16px 32px 20px" }}>
+
+                  {/* Toolkit 分组 */}
+                  <div style={{ marginBottom: showResources ? 20 : 0 }}>
+                    <div style={{ display:"flex", alignItems:"center", gap:8, marginBottom:12 }}>
+                      <div style={{ width:6, height:6, borderRadius:"50%", background:MOLOCO_ORANGE }} />
+                      <span style={{ fontSize:13, fontWeight:700, color:"#0F1729" }}>Toolkit</span>
+                      <span style={{ fontSize:11, color:"#9AA5B8" }}>Internal tools & automations</span>
                     </div>
                     <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(260px, 1fr))", gap:12 }}>
-                      {[...drawerEntries].sort(([a], [b]) => {
-                        if (a === "All") return -1;
-                        if (b === "All") return 1;
-                        return 0;
-                      }).map(([pi, links]) => {
-                        const pc = PI_COLOR[pi] || "#888";
-                        const tc = pc==="#F9E000"?"#B8960C":pc;
-                        return (
-                          <div key={pi} style={{ background:"#F7F9FC", borderRadius:8, padding:"10px 12px", border:"1px solid #E8EDF5" }}>
-                            <div style={{ fontSize:13, fontWeight:800, color:tc, marginBottom:6, letterSpacing:.3 }}>{pi}</div>
-                            {links.map(l => (
-                              <a key={l.label} href={l.url} target="_blank" rel="noreferrer"
-                                style={{ display:"block", fontSize:13, color:"#4A5568", textDecoration:"none", padding:"4px 0", lineHeight:1.4 }}>
-                                → {l.label}
-                              </a>
-                            ))}
-                          </div>
-                        );
-                      })}
+                      <div style={{ background:"#FFF7F4", borderRadius:8, padding:"10px 12px", border:"1px solid #FFD6B8" }}>
+                        <div style={{ fontSize:13, fontWeight:800, color:MOLOCO_ORANGE, marginBottom:6, letterSpacing:.3 }}>🛠 PI Tools</div>
+                        <a href="https://danielwang1027.github.io/eligibility-checker"
+                          target="_blank" rel="noreferrer"
+                          style={{ display:"block", fontSize:13, color:"#4A5568", textDecoration:"none", padding:"4px 0", lineHeight:1.4 }}>
+                          → PI Eligibility Checker
+                        </a>
+                      </div>
                     </div>
                   </div>
+
+                  {/* 分割线 + Resources 分组 */}
+                  {showResources && (
+                    <>
+                      <div style={{ height:1, background:"#E8EDF5", marginBottom:16 }} />
+                      <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:14 }}>
+                        <div style={{ display:"flex", alignItems:"center", gap:8 }}>
+                          <div style={{ width:6, height:6, borderRadius:"50%", background:MOLOCO_BLUE }} />
+                          <span style={{ fontSize:13, fontWeight:700, color:"#0F1729" }}>{selPI==="All"?"All PI Resource Links":selPI+" Resource Links"}</span>
+                          <span style={{ fontSize:11, color:"#9AA5B8" }}>Specs, portals & guides</span>
+                        </div>
+                        <button onClick={() => setDrawerOpen(false)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:15, color:"#9AA5B8" }}>✕</button>
+                      </div>
+                      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(260px, 1fr))", gap:12 }}>
+                        {[...drawerEntries].sort(([a], [b]) => {
+                          if (a === "All") return -1;
+                          if (b === "All") return 1;
+                          return 0;
+                        }).map(([pi, links]) => {
+                          const pc = PI_COLOR[pi] || "#888";
+                          const tc = pc==="#F9E000"?"#B8960C":pc;
+                          return (
+                            <div key={pi} style={{ background:"#F7F9FC", borderRadius:8, padding:"10px 12px", border:"1px solid #E8EDF5" }}>
+                              <div style={{ fontSize:13, fontWeight:800, color:tc, marginBottom:6, letterSpacing:.3 }}>{pi}</div>
+                              {links.map(l => (
+                                <a key={l.label} href={l.url} target="_blank" rel="noreferrer"
+                                  style={{ display:"block", fontSize:13, color:"#4A5568", textDecoration:"none", padding:"4px 0", lineHeight:1.4 }}>
+                                  → {l.label}
+                                </a>
+                              ))}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </>
+                  )}
+
+                  {/* 无 Resources 时的关闭按钮 */}
+                  {!showResources && (
+                    <div style={{ display:"flex", justifyContent:"flex-end", marginTop:8 }}>
+                      <button onClick={() => setDrawerOpen(false)} style={{ background:"none", border:"none", cursor:"pointer", fontSize:15, color:"#9AA5B8" }}>✕</button>
+                    </div>
+                  )}
+
                 </div>
-              )}
-              <div style={{ background: drawerOpen?"#fff":"transparent", borderTop: drawerOpen?"1px solid #E8EDF5":"none", display:"flex", justifyContent:"flex-end", padding:"10px 24px" }}>
-                <button onClick={() => setDrawerOpen(o => !o)}
-                  style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 18px", borderRadius:999, background:MOLOCO_BLUE, border:"none", cursor:"pointer", boxShadow:"0 4px 16px rgba(18,73,233,0.35)" }}>
-                  <span style={{ fontSize:13 }}>🔗</span>
-                  <span style={{ fontSize:12, fontWeight:700, color:"#fff", letterSpacing:.3 }}>{selPI==="All"?"PI Resources":selPI+" Resources"}</span>
-                  <span style={{ fontSize:10, color:"rgba(255,255,255,0.7)", display:"inline-block", transform: drawerOpen?"rotate(180deg)":"rotate(0deg)", transition:"transform .2s" }}>▲</span>
-                </button>
               </div>
+            )}
+            <div style={{ background: drawerOpen?"#fff":"transparent", borderTop: drawerOpen?"1px solid #E8EDF5":"none", display:"flex", justifyContent:"flex-end", padding:"10px 24px" }}>
+              <button onClick={() => setDrawerOpen(o => !o)}
+                style={{ display:"flex", alignItems:"center", gap:8, padding:"10px 18px", borderRadius:999, background:MOLOCO_BLUE, border:"none", cursor:"pointer", boxShadow:"0 4px 16px rgba(18,73,233,0.35)" }}>
+                <span style={{ fontSize:13 }}>🔗</span>
+                <span style={{ fontSize:12, fontWeight:700, color:"#fff", letterSpacing:.3 }}>{selPI==="All"?"PI Resources & Toolkit":selPI+" Resources & Toolkit"}</span>
+                <span style={{ fontSize:10, color:"rgba(255,255,255,0.7)", display:"inline-block", transform: drawerOpen?"rotate(180deg)":"rotate(0deg)", transition:"transform .2s" }}>▲</span>
+              </button>
             </div>
-          )}
+          </div>
 
         </div>
       )}
